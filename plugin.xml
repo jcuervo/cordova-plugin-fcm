@@ -18,14 +18,14 @@
   under the License.
 -->
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-           id="cordova-plugin-fcm"
+           id="gerard-cordova-plugin-fcm"
       version="1.1.5">
-    <name>FCMPlugin</name>
-    <description>Cordova FCM Plugin</description>
+    <name>Gerard FCMPlugin</name>
+    <description>Gerard Cordova FCM Plugin</description>
     <license>Apache 2.0</license>
-    <keywords>cordova, fcm, push, plugin</keywords>
+    <keywords>gerard, cordova, fcm, push, plugin</keywords>
     
-    <info>Cordova FCM plugin</info>
+    <info>Gerard Cordova FCM plugin</info>
 	
     <js-module src="www/FCMPlugin.js" name="FCMPlugin">
 	<clobbers target="FCMPlugin" />
