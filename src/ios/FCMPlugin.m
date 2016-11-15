@@ -36,6 +36,57 @@ static FCMPlugin *fcmPluginInstance;
     
 }
 
+// CONNECT //
+- (void) connect:(CDVInvokedUrlCommand *)command
+{
+    NSLog(@"connecting to FCM");
+    [self.commandDelegate runInBackground:^{
+        
+        UIApplication* application = [UIApplication sharedApplication];
+        
+        // iOS 7.1 or earlier
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+            UIRemoteNotificationType allNotificationTypes = (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge);
+            [application registerForRemoteNotificationTypes:allNotificationTypes];
+        } else {
+            // iOS 8 or later
+            UIUserNotificationType allNotificationTypes =
+            (UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge);
+            UIUserNotificationSettings *settings =
+            [UIUserNotificationSettings settingsForTypes:allNotificationTypes categories:nil];
+            [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+            [[UIApplication sharedApplication] registerForRemoteNotifications];
+        }
+        
+        
+        [[FIRMessaging messaging] connectWithCompletion:^(NSError * _Nullable error) {
+            CDVPluginResult* pluginResult = nil;
+            
+            if (error != nil) {
+                NSLog(@"Unable to connect to FCM. %@", error);
+                
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: [error debugDescription]];
+
+            } else {
+                
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+                
+                
+               
+                NSLog(@"Connected to FCM.");
+                [[FIRMessaging messaging] subscribeToTopic:@"/topics/ios"];
+                [[FIRMessaging messaging] subscribeToTopic:@"/topics/all"];
+
+            }
+            
+            [self.commandDelegate
+                 sendPluginResult: pluginResult
+                       callbackId: command.callbackId
+            ];
+        }];
+    }];
+}
+
 // GET TOKEN //
 - (void) getToken:(CDVInvokedUrlCommand *)command 
 {

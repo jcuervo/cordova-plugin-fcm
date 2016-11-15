@@ -30,20 +30,8 @@ static NSData *lastPush;
 
     NSLog(@"DidFinishLaunchingWithOptions");
     // Register for remote notifications
+    
 
-    // iOS 7.1 or earlier
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
-        UIRemoteNotificationType allNotificationTypes = (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge);
-        [application registerForRemoteNotificationTypes:allNotificationTypes];
-    } else {
-        // iOS 8 or later
-        UIUserNotificationType allNotificationTypes =
-        (UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge);
-        UIUserNotificationSettings *settings =
-        [UIUserNotificationSettings settingsForTypes:allNotificationTypes categories:nil];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-    }
 
     // [START configure_firebase]
     [FIRApp configure];
@@ -123,7 +111,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
     NSLog(@"InstanceID token: %@", refreshedToken);
 
     // Connect to FCM since connection may have failed when attempted before having a token.
-    [self connectToFcm];
+    //[self connectToFcm];
 
     // TODO: If necessary send token to appliation server.
 }
@@ -132,6 +120,8 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 // [START connect_to_fcm]
 - (void)connectToFcm
 {
+    // Disabled. To be called manually.
+/*
     [[FIRMessaging messaging] connectWithCompletion:^(NSError * _Nullable error) {
         if (error != nil) {
             NSLog(@"Unable to connect to FCM. %@", error);
@@ -140,7 +130,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
             [[FIRMessaging messaging] subscribeToTopic:@"/topics/ios"];
             [[FIRMessaging messaging] subscribeToTopic:@"/topics/all"];
         }
-    }];
+    }];*/
 }
 // [END connect_to_fcm]
 
@@ -148,7 +138,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     NSLog(@"app become active");
     [FCMPlugin.fcmPlugin appEnterForeground];
-    [self connectToFcm];
+    //[self connectToFcm];
 }
 
 // [START disconnect_from_fcm]

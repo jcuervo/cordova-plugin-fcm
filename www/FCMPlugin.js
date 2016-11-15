@@ -5,8 +5,10 @@ function FCMPlugin() {
 }
 
 
-
-
+// CONNECT //
+FCMPlugin.prototype.connect = function( success, error ){
+	exec(success, error, "FCMPlugin", 'connect', []);
+}
 
 // GET TOKEN //
 FCMPlugin.prototype.getToken = function( success, error ){
