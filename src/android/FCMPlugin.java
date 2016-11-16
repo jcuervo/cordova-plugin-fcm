@@ -46,6 +46,20 @@ public class FCMPlugin extends CordovaPlugin {
 				//
 				callbackContext.success();
 			}
+            // CONNECT //
+            else if (action.equals("connect")) {
+                cordova.getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        try{
+                            Log.d(TAG, "\tConnected!");
+							callbackContext.success();
+                        }catch(Exception e){
+							callbackContext.error(e.getMessage());
+                            Log.d(TAG, "\tError connecting");
+                        }
+                    }
+                });
+            }
 			// GET TOKEN //
 			else if (action.equals("getToken")) {
 				cordova.getActivity().runOnUiThread(new Runnable() {
