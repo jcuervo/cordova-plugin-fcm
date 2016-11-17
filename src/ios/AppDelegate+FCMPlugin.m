@@ -30,7 +30,7 @@ static NSData *lastPush;
 
     NSLog(@"DidFinishLaunchingWithOptions");
     // Register for remote notifications
-    
+
 
 
     // [START configure_firebase]
@@ -45,13 +45,13 @@ static NSData *lastPush;
 // [START receive_message in background]
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSLog(@"Message ID: %@", userInfo[@"gcm.message_id"]);
-    
+
     NSError *error;
     NSDictionary *userInfoMutable = [userInfo mutableCopy];
-    
+
     if (application.applicationState != UIApplicationStateActive) {
         NSLog(@"New method with push callback: %@", userInfo);
-        
+
         [userInfoMutable setValue:@(YES) forKey:@"wasTapped"];
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfoMutable
                                                            options:0
@@ -76,9 +76,9 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
     // Pring full message.
     NSLog(@"%@", userInfo);
     NSError *error;
-    
+
     NSDictionary *userInfoMutable = [userInfo mutableCopy];
-    
+
 	//USER NOT TAPPED NOTIFICATION
     if (application.applicationState == UIApplicationStateActive) {
         [userInfoMutable setValue:@(NO) forKey:@"wasTapped"];
@@ -137,6 +137,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     NSLog(@"app become active");
+    application.applicationIconBadgeNumber = 0;
     [FCMPlugin.fcmPlugin appEnterForeground];
     //[self connectToFcm];
 }
